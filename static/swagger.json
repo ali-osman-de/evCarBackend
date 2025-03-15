@@ -1,0 +1,227 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Electric Car API",
+        "description": "Electric car listing and comparison API with Flask and SQLite",
+        "version": "1.0.0"
+    },
+    "host": "127.0.0.1:5000",
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/cars": {
+            "get": {
+                "summary": "Get all cars",
+                "responses": {
+                    "200": {
+                        "description": "List of cars",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Car"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Add a new car",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Car"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Car added successfully",
+                        "schema": {
+                            "$ref": "#/definitions/Car"
+                        }
+                    }
+                }
+            }
+        },
+        "/cars/{id}": {
+            "get": {
+                "summary": "Get a single car by ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Car details",
+                        "schema": {
+                            "$ref": "#/definitions/Car"
+                        }
+                    },
+                    "404": {
+                        "description": "Car not found"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update a car by ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Car"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Car updated successfully",
+                        "schema": {
+                            "$ref": "#/definitions/Car"
+                        }
+                    },
+                    "404": {
+                        "description": "Car not found"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a car by ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Car deleted successfully"
+                    },
+                    "404": {
+                        "description": "Car not found"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Car": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "Car ID"
+                },
+                "car_name": {
+                    "type": "string",
+                    "description": "Aracın adı (örneğin, Tesla Model 3)"
+                },
+                "car_model": {
+                    "type": "string",
+                    "description": "Aracın modeli (örneğin, Standard Range Plus)"
+                },
+                "car_year": {
+                    "type": "integer",
+                    "description": "Aracın üretim yılı (örneğin, 2021)"
+                },
+                "car_image": {
+                    "type": "string",
+                    "description": "Aracın resim URL'si"
+                },
+                "car_range": {
+                    "type": "integer",
+                    "description": "Aracın menzili (km cinsinden)"
+                },
+                "top_speed": {
+                    "type": "integer",
+                    "description": "Aracın maksimum hızı (km/saat)"
+                },
+                "acceleration": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "Aracın 0-100 km/s hızlanma süresi (saniye)"
+                },
+                "battery_capacity": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "Aracın batarya kapasitesi (kWh)"
+                },
+                "charge_time": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "Aracın tam şarj süresi (saat)"
+                },
+                "fast_charge_support": {
+                    "type": "boolean",
+                    "description": "Aracın hızlı şarj desteği olup olmadığı"
+                },
+                "drive_type": {
+                    "type": "string",
+                    "description": "Aracın çekiş tipi (örneğin, Önden Çekiş, Arkadan Çekiş, 4x4)"
+                },
+                "autonomous_driving": {
+                    "type": "boolean",
+                    "description": "Aracın otonom sürüş özelliği olup olmadığı"
+                },
+                "seating_capacity": {
+                    "type": "integer",
+                    "description": "Aracın koltuk kapasitesi"
+                },
+                "price": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "Aracın fiyatı (USD)"
+                },
+                "tax_incentive": {
+                    "type": "boolean",
+                    "description": "Aracın vergi indirimi desteği olup olmadığı"
+                },
+                "weight": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "Aracın ağırlığı (kg)"
+                },
+                "length": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "Aracın uzunluğu (metre)"
+                },
+                "width": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "Aracın genişliği (metre)"
+                },
+                "height": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "Aracın yüksekliği (metre)"
+                },
+                "manufacturer": {
+                    "type": "string",
+                    "description": "Aracın üretici firması"
+                },
+                "country_of_origin": {
+                    "type": "string",
+                    "description": "Aracın üretim ülkesi"
+                }
+            }
+        }
+    }
+}
