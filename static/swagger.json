@@ -5,9 +5,9 @@
         "description": "Electric car listing and comparison API with Flask and SQLite",
         "version": "1.0.0"
     },
-    "host": "127.0.0.1:5000",
+    "host": "evcarbackend.onrender.com",
     "schemes": [
-        "http"
+        "https"
     ],
     "paths": {
         "/cars": {
