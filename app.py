@@ -27,6 +27,7 @@ class Car(db.Model):
     car_model = db.Column(db.String(100), nullable=False)
     car_year = db.Column(db.Integer, nullable=False)
     car_image = db.Column(db.String(1000), nullable=False)
+    car_category= db.Column(db.String(100), nullable=False)
     
     # Performans Özellikleri
     car_range = db.Column(db.Integer, nullable=False)  # Menzil (km)

@@ -6,6 +6,7 @@
         "version": "1.0.0"
     },
     "host": "evcarbackend.onrender.com",
+
     "schemes": [
         "https"
     ],
@@ -144,6 +145,10 @@
                 "car_image": {
                     "type": "string",
                     "description": "Aracın resim URL'si"
+                },
+                "car_category": {
+                    "type": "string",
+                    "description": "Aracın kategorisi (örneğin, Sedan, SUV, Hatchback)"
                 },
                 "car_range": {
                     "type": "integer",
