@@ -6,37 +6,60 @@
         "version": "1.0.0"
     },
     "host": "evcarbackend.onrender.com",
-
     "schemes": [
         "https"
     ],
     "paths": {
+        "/cars/search": {
+            "get": {
+                "summary": "Search cars by name or model",
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "required": true,
+                        "type": "string",
+                        "description": "Search query to filter cars by name or model"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of cars matching the search query",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Car"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/cars/category/{category}": {
-  "get": {
-    "summary": "Get cars by category",
-    "parameters": [
-      {
-        "name": "category",
-        "in": "path",
-        "required": true,
-        "type": "string",
-        "description": "Category of the car (e.g., Sedan, SUV)"
-      }
-    ],
-    "responses": {
-      "200": {
-        "description": "List of cars in the given category",
-        "schema": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Car"
-          }
-        }
-      }
-    }
-  }
-}
-,
+            "get": {
+                "summary": "Get cars by category",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "Category of the car (e.g., Sedan, SUV)"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of cars in the given category",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Car"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/cars": {
             "get": {
                 "summary": "Get all cars",

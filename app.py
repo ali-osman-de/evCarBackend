@@ -125,6 +125,22 @@ def get_cars_by_category(category):
     cars = Car.query.filter(Car.car_category.ilike(category)).all()
     return jsonify(cars_schema.dump(cars))
 
+# 🔍 Canlı arama (car_name veya car_model alanına göre)
+@app.route("/cars/search", methods=["GET"])
+def search_cars():
+    query = request.args.get("q", "").lower()
+    if not query:
+        return jsonify([])
+
+    cars = Car.query.filter(
+        db.or_(
+            Car.car_name.ilike(f"%{query}%"),
+            Car.car_model.ilike(f"%{query}%")
+        )
+    ).all()
+    return jsonify(cars_schema.dump(cars))
+
+
 
 # 📌 Veritabanını oluştur
 with app.app_context():
