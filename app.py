@@ -119,6 +119,13 @@ def delete_car(id):
     db.session.commit()
     return "", 204
 
+# 🔹 Belirli bir kategoriye göre arabaları listele
+@app.route("/cars/category/<string:category>", methods=["GET"])
+def get_cars_by_category(category):
+    cars = Car.query.filter(Car.car_category.ilike(category)).all()
+    return jsonify(cars_schema.dump(cars))
+
+
 # 📌 Veritabanını oluştur
 with app.app_context():
     db.create_all()

@@ -11,6 +11,32 @@
         "https"
     ],
     "paths": {
+        "/cars/category/{category}": {
+  "get": {
+    "summary": "Get cars by category",
+    "parameters": [
+      {
+        "name": "category",
+        "in": "path",
+        "required": true,
+        "type": "string",
+        "description": "Category of the car (e.g., Sedan, SUV)"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "List of cars in the given category",
+        "schema": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Car"
+          }
+        }
+      }
+    }
+  }
+}
+,
         "/cars": {
             "get": {
                 "summary": "Get all cars",
