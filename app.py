@@ -18,47 +18,46 @@ app.register_blueprint(swagger_ui, url_prefix=SWAGGER_URL)
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
-# 🚗 Model Tanımlama
+
 class Car(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     
-    # Temel Bilgiler
+
     car_name = db.Column(db.String(100), nullable=False)
     car_model = db.Column(db.String(100), nullable=False)
     car_year = db.Column(db.Integer, nullable=False)
     car_image = db.Column(db.String(1000), nullable=False)
     car_category= db.Column(db.String(100), nullable=False)
     
-    # Performans Özellikleri
-    car_range = db.Column(db.Integer, nullable=False)  # Menzil (km)
-    top_speed = db.Column(db.Integer, nullable=False)  # Maksimum hız (km/saat)
-    acceleration = db.Column(db.Float, nullable=False)  # 0-100 km/s hızlanma (saniye)
+
+    car_range = db.Column(db.Integer, nullable=False)  
+    top_speed = db.Column(db.Integer, nullable=False) 
+    acceleration = db.Column(db.Float, nullable=False) 
     
-    # Batarya ve Şarj Bilgileri
-    battery_capacity = db.Column(db.Float, nullable=False)  # Batarya kapasitesi (kWh)
-    charge_time = db.Column(db.Float, nullable=False)  # Tam şarj süresi (saat)
-    fast_charge_support = db.Column(db.Boolean, default=False)  # Hızlı şarj desteği
+  
+    battery_capacity = db.Column(db.Float, nullable=False)
+    charge_time = db.Column(db.Float, nullable=False) 
+    fast_charge_support = db.Column(db.Boolean, default=False) 
     
-    # Çekiş ve Sürüş Özellikleri
-    drive_type = db.Column(db.String(50), nullable=False)  # Çekiş tipi (Önden Çekiş, Arkadan Çekiş, 4x4)
-    autonomous_driving = db.Column(db.Boolean, default=False)  # Otonom sürüş desteği
-    seating_capacity = db.Column(db.Integer, nullable=False)  # Koltuk kapasitesi
+    drive_type = db.Column(db.String(50), nullable=False)  
+    autonomous_driving = db.Column(db.Boolean, default=False)  
+    seating_capacity = db.Column(db.Integer, nullable=False) 
     
-    # Fiyat ve Ekonomi Bilgileri
-    price = db.Column(db.Float, nullable=False)  # Araba fiyatı (USD)
-    tax_incentive = db.Column(db.Boolean, default=False)  # Vergi indirimi desteği
+
+    price = db.Column(db.Float, nullable=False) 
+    tax_incentive = db.Column(db.Boolean, default=False)  
     
-    # Diğer Teknik Detaylar
-    weight = db.Column(db.Float, nullable=False)  # Araba ağırlığı (kg)
-    length = db.Column(db.Float, nullable=False)  # Araba uzunluğu (metre)
-    width = db.Column(db.Float, nullable=False)  # Araba genişliği (metre)
-    height = db.Column(db.Float, nullable=False)  # Araba yüksekliği (metre)
+
+    weight = db.Column(db.Float, nullable=False)  
+    length = db.Column(db.Float, nullable=False) 
+    width = db.Column(db.Float, nullable=False)  
+    height = db.Column(db.Float, nullable=False) 
     
-    # Üretici Bilgileri
-    manufacturer = db.Column(db.String(100), nullable=False)  # Üretici firma
-    country_of_origin = db.Column(db.String(100), nullable=False)  # Üretim ülkesi
+
+    manufacturer = db.Column(db.String(100), nullable=False) 
+    country_of_origin = db.Column(db.String(100), nullable=False) 
     
-# 📦 Schema (JSON formatında dönüşüm için)
+
 class CarSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Car
@@ -66,21 +65,20 @@ class CarSchema(ma.SQLAlchemyAutoSchema):
 car_schema = CarSchema()
 cars_schema = CarSchema(many=True)
 
-# 🚀 CRUD İşlemleri
 
-# 🔹 Tüm arabaları listele
+
 @app.route("/cars", methods=["GET"])
 def get_cars():
     cars = Car.query.all()
     return jsonify(cars_schema.dump(cars))
 
-# 🔹 Tek bir arabayı getir
+
 @app.route("/cars/<int:id>", methods=["GET"])
 def get_car(id):
     car = Car.query.get(id)
     return jsonify(car_schema.dump(car)) if car else jsonify({"message": "Car not found"}), 404
 
-# 🔹 Yeni bir araba ekle
+
 @app.route("/cars", methods=["POST"])
 def add_car():
     data = request.json
@@ -91,7 +89,7 @@ def add_car():
     db.session.commit()
     return jsonify(car_schema.dump(new_car)), 201
 
-# 🔹 Bir arabayı güncelle
+
 @app.route("/cars/<int:id>", methods=["PUT"])
 def update_car(id):
     car = Car.query.get(id)
@@ -108,7 +106,7 @@ def update_car(id):
     db.session.commit()
     return jsonify(car_schema.dump(car))
 
-# 🔹 Bir arabayı sil
+
 @app.route("/cars/<int:id>", methods=["DELETE"])
 def delete_car(id):
     car = Car.query.get(id)
@@ -119,13 +117,12 @@ def delete_car(id):
     db.session.commit()
     return "", 204
 
-# 🔹 Belirli bir kategoriye göre arabaları listele
+
 @app.route("/cars/category/<string:category>", methods=["GET"])
 def get_cars_by_category(category):
     cars = Car.query.filter(Car.car_category.ilike(category)).all()
     return jsonify(cars_schema.dump(cars))
 
-# 🔍 Canlı arama (car_name veya car_model alanına göre)
 @app.route("/cars/search", methods=["GET"])
 def search_cars():
     query = request.args.get("q", "").lower()
@@ -142,10 +139,8 @@ def search_cars():
 
 
 
-# 📌 Veritabanını oluştur
 with app.app_context():
     db.create_all()
 
-# 🚦 Sunucuyu başlat
 if __name__ == "__main__":
     app.run(debug=True)
